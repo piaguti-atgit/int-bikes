@@ -12,6 +12,7 @@ describe("Rental", () => {
       bikeType: "urban",
       hours: 3,
       pricePerHour: 100,
+      lateHours: 2,
     });
   });
 
@@ -71,7 +72,17 @@ describe("Rental", () => {
     expect(() => (rental.pricePerHour = Number.NaN)).toThrow();
   });
 
+  test("show the rental as text plus lateHours", () => {
+    expect(rental.toString()).toBe("B-123 (Urbana) - Juan Gómez - 3 h - $300 Atraso: 2 h");
+  });
+
+  test("set negative hours to 0", () => {
+    rental.lateHours = -2;
+    expect(rental.lateHours).toBe(0);
+  });
+
   test("show the rental as text", () => {
+    rental.lateHours = -2;
     expect(rental.toString()).toBe("B-123 (Urbana) - Juan Gómez - 3 h - $300");
   });
 });

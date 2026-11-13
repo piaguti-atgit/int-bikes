@@ -12,6 +12,7 @@ export type RentalData = {
   bikeType: BikeType;
   hours: number;
   pricePerHour: number;
+  lateHours: number;
 };
 
 export class Rental {
@@ -28,6 +29,7 @@ export class Rental {
     this.bikeType = data.bikeType;
     this.hours = data.hours;
     this.pricePerHour = data.pricePerHour;
+    this.lateHours = data.lateHours;
   }
 
   get customer(): string {
@@ -92,7 +94,11 @@ export class Rental {
   }
 
   set lateHours(_value: number) {
-    // TODO: validar y guardar las horas de atraso
+    if(!Number.isFinite(_value) || _value <= 0) {
+      this._lateHours = 0;
+    } else{
+      this._lateHours = _value;
+    }
   }
 
   cost(): number {
@@ -100,6 +106,9 @@ export class Rental {
   }
 
   toString(): string {
+    if(this.lateHours > 0){
+      return `${this.bikeCode} (${BIKE_TYPE_LABELS[this.bikeType]}) - ${this.customer} - ${this.hours} h - $${this.cost()} Atraso: ${this.lateHours} h`;
+    }
     return `${this.bikeCode} (${BIKE_TYPE_LABELS[this.bikeType]}) - ${this.customer} - ${this.hours} h - $${this.cost()}`;
   }
 }

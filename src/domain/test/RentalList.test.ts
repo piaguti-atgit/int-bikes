@@ -14,6 +14,7 @@ describe("RentalList", () => {
       bikeType: "urban",
       hours: 3,
       pricePerHour: 100,
+      lateHours: 2,
     });
   });
 
@@ -40,5 +41,20 @@ describe("RentalList", () => {
   test("total income", () => {
     list.add(rental);
     expect(list.totalIncome()).toBe(300);
+  });
+
+  test("total late fees", () => {
+    expect(list.totalLateFees()).toBe(0);
+  });
+
+  test("total late fees", () => {
+    list.add(rental);
+    expect(list.totalLateFees()).toBe(400);
+  });
+
+  test("eliminate invalid bike", () => {
+    list.add(rental);
+    list.remove(rental.bikeCode);
+    expect(() => list.remove(rental.bikeCode)).toThrow("Esa bicicleta no existe.");
   });
 });
