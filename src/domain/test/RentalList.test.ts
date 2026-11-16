@@ -55,6 +55,8 @@ describe("RentalList", () => {
   test("eliminate invalid bike", () => {
     list.add(rental);
     list.remove(rental.bikeCode);
-    expect(() => list.remove(rental.bikeCode)).toThrow("Esa bicicleta no existe.");
+    expect(() => list.remove(rental.bikeCode)).toThrow(
+      "Esa bicicleta no existe.",
+    );
   });
 });

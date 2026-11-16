@@ -73,7 +73,9 @@ describe("Rental", () => {
   });
 
   test("show the rental as text plus lateHours", () => {
-    expect(rental.toString()).toBe("B-123 (Urbana) - Juan Gómez - 3 h - $300 Atraso: 2 h");
+    expect(rental.toString()).toBe(
+      "B-123 (Urbana) - Juan Gómez - 3 h - $300 Atraso: 2 h",
+    );
   });
 
   test("set negative hours to 0", () => {

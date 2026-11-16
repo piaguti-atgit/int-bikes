@@ -14,10 +14,8 @@ export class RentalList {
   }
 
   remove(_bikeCode: string): void {
-    const ix = this.#items.findIndex(
-      (rental) => rental.bikeCode === _bikeCode,
-    );
-    if(ix === -1) {
+    const ix = this.#items.findIndex((rental) => rental.bikeCode === _bikeCode);
+    if (ix === -1) {
       throw new Error("Esa bicicleta no existe.");
     }
     this.#items.splice(ix, 1);
@@ -37,8 +35,8 @@ export class RentalList {
 
   totalLateFees(): number {
     let total = 0;
-    for(const rent of this.#items){
-      total+= rent.lateHours*rent.pricePerHour*2;
+    for (const rent of this.#items) {
+      total += rent.lateHours * rent.pricePerHour * 2;
     }
     return total;
   }

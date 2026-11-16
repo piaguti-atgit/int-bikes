@@ -94,9 +94,9 @@ export class Rental {
   }
 
   set lateHours(_value: number) {
-    if(!Number.isFinite(_value) || _value <= 0) {
+    if (!Number.isFinite(_value) || _value <= 0) {
       this._lateHours = 0;
-    } else{
+    } else {
       this._lateHours = _value;
     }
   }
@@ -106,7 +106,7 @@ export class Rental {
   }
 
   toString(): string {
-    if(this.lateHours > 0){
+    if (this.lateHours > 0) {
       return `${this.bikeCode} (${BIKE_TYPE_LABELS[this.bikeType]}) - ${this.customer} - ${this.hours} h - $${this.cost()} Atraso: ${this.lateHours} h`;
     }
     return `${this.bikeCode} (${BIKE_TYPE_LABELS[this.bikeType]}) - ${this.customer} - ${this.hours} h - $${this.cost()}`;

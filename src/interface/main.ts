@@ -9,6 +9,8 @@ const inpCustomer = document.getElementById(
   "inp-customer",
 ) as HTMLInputElement | null;
 const inpCode = document.getElementById("inp-code") as HTMLInputElement | null;
+const inpLateHours = document.getElementById("inp-late-hours") as HTMLInputElement | null;
+const inpTotalLate = document.getElementById("late-hours") as HTMLInputElement | null;
 const selType = document.getElementById("sel-type") as HTMLSelectElement | null;
 const inpHours = document.getElementById(
   "inp-hours",
@@ -49,11 +51,12 @@ const inpTotalIncome = document.getElementById(
 ) as HTMLInputElement | null;
 
 function clearInputs(): void {
-  if (inpCustomer && inpCode && inpHours && inpPrice) {
+  if (inpCustomer && inpCode && inpHours && inpPrice && inpLateHours) {
     inpCustomer.value = "";
     inpCode.value = "";
     inpHours.value = "";
     inpPrice.value = "";
+    inpLateHours.value = "";
   }
 }
 
@@ -82,7 +85,10 @@ function createDeleteButton(rental: Rental): HTMLButtonElement {
   button.textContent = "Eliminar";
   button.setAttribute("aria-label", `Eliminar ${rental.bikeCode}`);
   button.addEventListener("click", () => {
-    // TODO: eliminar este alquiler y actualizar los paneles
+    rentalList.remove(rental.bikeCode);
+    updateList();
+    updateListByType();
+    updateTotals();
   });
   return button;
 }
@@ -96,11 +102,14 @@ function createCard(rental: Rental): HTMLDivElement {
   body.className = "card-body";
   const title = document.createElement("h5");
   title.className = "card-title";
+  const badge = document.createElement("span");
+  badge.className = "badge text-bg-info ms-2";
+  badge.innerText = `${BIKE_TYPE_LABELS[rental.bikeType]}`;
   title.textContent = rental.bikeCode;
+  title.appendChild(badge);
   const lines = [
-    `Tipo: ${BIKE_TYPE_LABELS[rental.bikeType]}`,
     `Cliente: ${rental.customer}`,
-    `Horas: ${rental.hours}`,
+    `Horas: ${rental.hours} h`,
     `Costo: $${rental.cost()}`,
   ];
   if (rental.lateHours > 0) {
@@ -133,9 +142,10 @@ function updateListByType(): void {
 }
 
 function updateTotals(): void {
-  if (inpTotalRentals && inpTotalIncome) {
+  if (inpTotalRentals && inpTotalIncome && inpTotalLate) {
     inpTotalRentals.value = String(rentalList.getItems().length);
     inpTotalIncome.value = String(rentalList.totalIncome());
+    inpTotalLate.value = String(rentalList.totalLateFees());
   }
 }
 
@@ -163,6 +173,7 @@ if (btnAdd && inpCustomer && inpCode && selType && inpHours && inpPrice) {
         bikeType: selType.value as BikeType,
         hours: Number(inpHours.value),
         pricePerHour: Number(inpPrice.value),
+        lateHours: Number(inpLateHours.value),
       });
       rentalList.add(rental);
       hideError();
